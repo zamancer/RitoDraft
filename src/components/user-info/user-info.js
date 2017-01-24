@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 class UserInfo extends Component {
     render() {
+        let {username, level, revisionDate} = this.props;
+
         return (
             <div className="component-block">
                 <div className="info-section row">
@@ -12,15 +14,15 @@ class UserInfo extends Component {
                         <div className="row">
                             <div className="col-md-4">
                                 <span className="info-title">Summoner:</span>
-                                <span className="info-value username">Alan Zambrano López</span>
+                                <span className="info-value username">{username}</span>
                             </div>
                             <div className="col-md-4">
-                                <span className="info-title">League:</span>
-                                <span className="info-value league">Silver V</span>
+                                <span className="info-title">Level:</span>
+                                <span className="info-value level">{level}</span>
                             </div>
                             <div className="col-md-4">
                                 <span className="info-title">Last Login:</span>
-                                <span className="info-value lastlogin">Mon 23</span>
+                                <span className="info-value revisionDate">{revisionDate}</span>
                             </div>        
                         </div>
                     </div>
