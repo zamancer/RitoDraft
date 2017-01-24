@@ -1,7 +1,7 @@
 .info-section {
     background-color: #222;
     color: white;
-    padding: 25px 0px 25px 0px;
+    padding: 5px 0px 15px 0px;
 }
 
 .info-title {
@@ -12,5 +12,4 @@
 
 .info-value {
     font-style: italic;
-    font-size: 14px;
 }
