@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/lib/Button';
-import Axios from 'axios';
 
+import ApiBuilder from '../../services/apiBuilder';
+import RiotApi from '../../services/riotApi';
 
 class Reloader extends Component {
     constructor() {
@@ -17,17 +18,13 @@ class Reloader extends Component {
 
     handleClick = function() {
 
-        const api_key = "21682440-4d87-4971-bc31-478519c61a20";
+        const apiUrl = ApiBuilder.getSummonerDataUrl('zamancer');
 
-        Axios.get(`https://na.api.pvp.net/api/lol/LAN/v1.4/summoner/by-name/zamancer?api_key=${api_key}`)
-            .then(function (response) {
+        RiotApi.get(apiUrl, {}, function (response) {
                 // Update state
-                console.log(response.data);
-            })
-            .catch(function (err) {
-                console.log(err);
+                console.log(response.data.zamancer);
             });
-        
+
         this.setState({isButtonEnabled: false});
 
         const me = this;
