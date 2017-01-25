@@ -1,0 +1,12 @@
+.gamecard-wrap {
+    border-radius: 3px;
+    margin-bottom: 8px;
+}
+
+.gamecard-gameinfo {
+    margin-top: 20px;
+}
+
+.gameinfo-first {
+    margin-left: -2em;
+}
