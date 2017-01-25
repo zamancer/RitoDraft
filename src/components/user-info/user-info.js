@@ -3,6 +3,7 @@ import './user-info.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 class UserInfo extends Component {
+
     render() {
         let {username, level, revisionDate} = this.props;
 

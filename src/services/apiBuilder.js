@@ -1,7 +1,7 @@
 import RiotApiConstants from '../constants/riotApiConstants';
 
 function getSummonerDataUrl(summonerName) {
-    return buildApiUrl(`/api/lol/LAN/v1.4/summoner/by-name/${summonerName}`)
+    return buildApiUrl(`api/lol/LAN/v1.4/summoner/by-name/${summonerName}`)
 }
 
 function buildApiUrl(apiUrl) {
