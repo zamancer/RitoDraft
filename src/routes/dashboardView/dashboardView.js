@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import UserInfo from '../../components/user-info/user-info';
 import Reloader from '../../components/reloader/reloader';
 import GameCard from '../../components/gamecard/gamecard';
+import Modal from 'react-bootstrap/lib/Modal';
 //@Services
 import ApiBuilder from '../../services/apiBuilder';
 import RiotApi from '../../services/riotApi';
 //@Libs
+import 'bootstrap/dist/css/bootstrap.css';
 import Axios from 'axios';
 import _find from 'lodash/find';
 
@@ -14,13 +16,14 @@ class DasboardView extends Component {
     constructor() {
         super();
         this.state = {
+            showModal: false,
             userData: { userId: 365375, username: "Alan Zam", level: "23", revisionDate: "Mon 23" },
             gameCards: [{ result: "Win", timeSpent: "27m 22s", gameDate: "Mon 23, 2017", kda: 0.7, cs: 12, gold: 8630, champ: "Diana", champId: 101 },
                         { result: "Defeat", timeSpent: "19m 51s", gameDate: "Mon 24, 2017", kda: 20, cs: 128, gold: 10630, champ: "Orianna", champId: 102 }]
         }
 
         this.handleClick = this.handleClick.bind(this);
-        this.getCascade = this.getCascade.bind(this);
+        this.updateStateFromReload = this.updateStateFromReload.bind(this);
     }
 
     getUserInfo = function() {
@@ -42,19 +45,24 @@ class DasboardView extends Component {
             });
     }
 
-    getCascade(gameCards) {
+    updateStateFromReload(gameCards) {
         
         this.setState({
-                    gameCards
+                    gameCards,
+                    showModal: false
                 });
     }
 
     handleClick() {
-        // Presentar modal
-        // Ocultar modal
+        
+        this.setState({
+            showModal: true
+        });
+
         this.getGameInfo()
             .then(this.getChampionInfo)
-            .then(this.getCascade);
+            .then(this.updateStateFromReload)
+            .catch();
     }
 
     getGameInfo() {      
@@ -122,6 +130,11 @@ class DasboardView extends Component {
                     <UserInfo {...this.state.userData} />
                     <Reloader handleReload={this.handleClick} />
                     {gameCards}
+                    <Modal show={this.state.showModal} > 
+                        <Modal.Body>
+                            <h3>Reloading Data...</h3>
+                        </Modal.Body>
+                    </Modal>
                 </div>
             );
     }
