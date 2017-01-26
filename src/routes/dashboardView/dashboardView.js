@@ -17,32 +17,39 @@ class DasboardView extends Component {
         super();
         this.state = {
             showModal: false,
-            userData: { userId: 365375, username: "Alan Zam", level: "23", revisionDate: "Mon 23" },
-            gameCards: [{ result: "Win", timeSpent: "27m 22s", gameDate: "Mon 23, 2017", kda: 0.7, cs: 12, gold: 8630, champ: "Diana", champId: 101 },
-                        { result: "Defeat", timeSpent: "19m 51s", gameDate: "Mon 24, 2017", kda: 20, cs: 128, gold: 10630, champ: "Orianna", champId: 102 }]
+            userData: {},
+            gameCards: []
         }
 
         this.handleClick = this.handleClick.bind(this);
         this.updateStateFromReload = this.updateStateFromReload.bind(this);
     }
 
-    getUserInfo = function() {
+    componentDidMount(){
+        this.getUserInfo('zamancer');
+    }
+
+    getUserInfo = function(username) {
 
         const dashboard = this;
         
-        const apiUrl = ApiBuilder.getSummonerDataUrl('zamancer');
+        const apiUrl = ApiBuilder.getSummonerDataUrl(username);
         
-        RiotApi.get(apiUrl, {}, function (response) {
+        RiotApi.get(apiUrl, {}, 
+                function (response) {
                 
-                const userData = {userId: response.data.zamancer.id,
-                                  username: response.data.zamancer.name, 
-                                  level: response.data.zamancer.summonerLevel, 
-                                  revisionDate: new Date(response.data.zamancer.revisionDate).toDateString()};
+                    const userRemoteData = response.data[username];
+                    
+                    const userData = {userId: userRemoteData.id,
+                                    username: userRemoteData.name, 
+                                    level: userRemoteData.summonerLevel, 
+                                    revisionDate: new Date(userRemoteData.revisionDate).toDateString()};
 
-                dashboard.setState({
-                    userData
-                });
-            });
+                    dashboard.setState({
+                        userData
+                    });
+                }, 
+        () => alert('Username not found'));
     }
 
     updateStateFromReload(gameCards) {
@@ -83,8 +90,7 @@ class DasboardView extends Component {
                     kda: (game.stats.championsKilled + game.stats.assists) / game.stats.numDeaths,
                     cs: game.stats.minionsKilled + game.stats.neutralMinionsKilled,
                     gold: game.stats.goldEarned,
-                    champId: game.championId,
-                    champ: "Diana"
+                    champId: game.championId
                 };
             });
 
@@ -104,7 +110,7 @@ class DasboardView extends Component {
                 
                 let gameCardsWithChamp = obj.map((response) => {
                     
-                    let foundChamp = {champ: response.data.name};
+                    let foundChamp = {champ: response.data.key};
                     let gameCard = _find(gameCards, { champId: response.data.id });
                     
                     return Object.assign({}, gameCard, foundChamp);
@@ -127,8 +133,8 @@ class DasboardView extends Component {
 
         return (
                 <div>
-                    <UserInfo {...this.state.userData} />
                     <Reloader handleReload={this.handleClick} />
+                    <UserInfo {...this.state.userData} />
                     {gameCards}
                     <Modal show={this.state.showModal} > 
                         <Modal.Body>
