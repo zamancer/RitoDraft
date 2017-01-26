@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 function get(remoteApiUrl, params, responseHandler) {
-    Axios.get(remoteApiUrl, params)
+    return Axios.get(remoteApiUrl, params)
         .then(responseHandler)
         .catch(function(error) {
             if(error.response) {

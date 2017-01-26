@@ -1,7 +1,15 @@
 import RiotApiConstants from '../constants/riotApiConstants';
 
+function getRecentGamesUrl(summonerId) {
+    return buildApiUrl(`api/lol/LAN/v1.3/game/by-summoner/${summonerId}/recent`);
+}
+
 function getSummonerDataUrl(summonerName) {
-    return buildApiUrl(`api/lol/LAN/v1.4/summoner/by-name/${summonerName}`)
+    return buildApiUrl(`api/lol/LAN/v1.4/summoner/by-name/${summonerName}`);
+}
+
+function getChampionDataUrl(championId){
+    return buildApiUrl(`api/lol/static-data/LAN/v1.2/champion/${championId}`);
 }
 
 function buildApiUrl(apiUrl) {
@@ -9,5 +17,7 @@ function buildApiUrl(apiUrl) {
 }
 
 module.exports = {
-    getSummonerDataUrl
+    getSummonerDataUrl,
+    getRecentGamesUrl,
+    getChampionDataUrl
 }
