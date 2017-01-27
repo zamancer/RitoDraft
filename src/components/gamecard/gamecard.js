@@ -7,15 +7,17 @@ class GameCard extends Component {
 
         const { result, timeSpent, gameDate, kda, cs, gold, champ } = this.props;
 
+        const cardBaseClass = result === "Win" ? "row bg-primary": "row bg-danger";
+
         return(
             <div className="gamecard-wrap">
-                <div className="row bg-primary">
+                <div className={cardBaseClass}>
                     <div className="gamecard-champ col-md-2">
-                        <img src={`http://ddragon.leagueoflegends.com/cdn/7.2.1/img/champion/${champ}.png`} alt={`${champ}`}/>
+                        <img src={`https://ddragon.leagueoflegends.com/cdn/7.2.1/img/champion/${champ}.png`} alt={`${champ}`}/>
                     </div>
                     <div className="gamecard-gameinfo col-md-1 gameinfo-first">
                         <div className="gamecard-gameinfo-result">
-                            <p className="text-center">{result}</p>
+                            <p className="text-center"><strong>{result}</strong></p>
                             <p className="text-center">Time:</p>
                             <p className="text-center">{timeSpent}</p>
                         </div>

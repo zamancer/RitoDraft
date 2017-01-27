@@ -95,7 +95,7 @@ class Reloader extends Component {
                 };
             });
 
-            return { userData: userInfo, gameCards};
+            return { userData: userInfo, gameCards };
         });
     }
 
@@ -109,10 +109,10 @@ class Reloader extends Component {
         });
 
         return Axios.all(axiosRequests)
-            .then(function (obj) {
+            .then(function (axiosResponses) {
 
                 let gameCardsWithChamp = gameCards.map((gameCard) =>{
-                    let champData = _find(obj, function(o) { return o.data.id === gameCard.champId });
+                    let champData = _find(axiosResponses, function(response) { return response.data.id === gameCard.champId });
                     
                     let foundChamp = {champ: champData.data.key};
                     return Object.assign({}, gameCard, foundChamp);                    
