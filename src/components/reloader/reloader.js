@@ -22,7 +22,7 @@ class Reloader extends Component {
         super();
         this.state = {
             isButtonEnabled: true,
-            inputValue: 'Zamancer',
+            inputValue: '',
         };
         
         this.updateInputValue = this.updateInputValue.bind(this);

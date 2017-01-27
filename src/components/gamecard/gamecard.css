@@ -3,6 +3,10 @@
     margin-bottom: 8px;
 }
 
+.gamecard-wrap .row {
+    margin: 0;
+}
+
 .gamecard-gameinfo {
     margin-top: 20px;
 }

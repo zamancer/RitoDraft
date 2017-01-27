@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './dashboardView.css';
 //@Components
 import UserInfo from '../../components/user-info/user-info';
 import Reloader from '../../components/reloader/reloader';
@@ -27,7 +28,7 @@ class DasboardView extends Component {
     }
 
     updateStateFromReload(fetchedData) {
-        
+    
         this.setState({
                     userData: fetchedData.userData,
                     gameCards: fetchedData.gameCards,
@@ -44,11 +45,15 @@ class DasboardView extends Component {
     render() {
         const gameCards = this._getGameCards();
 
+        const gameCardList = gameCards.length > 0 ? gameCards : <h3>Here you will find you Lol stats</h3>;
+
         return (
                 <div>
                     <Reloader userId={this.state.userData.userId} showModal={this.isModalOpen} handleReload={this.updateStateFromReload} />
                     <UserInfo {...this.state.userData} />
-                    {gameCards}
+                    <div className="gamecard-list component-block">
+                        {gameCardList}               
+                    </div>
                     <Modal show={this.state.showModal} > 
                         <Modal.Body>
                             <h3>Reloading Data...</h3>
