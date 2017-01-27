@@ -27,7 +27,7 @@ class DasboardView extends Component {
     }
 
     updateStateFromReload(fetchedData) {
-    
+        
         this.setState({
                     userData: fetchedData.userData,
                     gameCards: fetchedData.gameCards,

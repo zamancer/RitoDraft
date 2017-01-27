@@ -12,6 +12,10 @@ import RiotApi from '../../services/riotApi';
 //@Libs
 import Axios from 'axios';
 import _find from 'lodash/find';
+import _add from 'lodash/add';
+import _divide from 'lodash/divide';
+import _floor from 'lodash/floor';
+import _round from 'lodash/round';
 
 class Reloader extends Component {
     constructor() {
@@ -69,16 +73,23 @@ class Reloader extends Component {
         return RiotApi.get(apiUrl, {}, function(response){
  
             const games = response.data.games;
-
+            
             let gameCards = games.map((game) => {
+
                 const localGameDate = new Date(game.createDate);
+
+                const minutesPlayed = _round(_divide(game.stats.timePlayed, 60));
+                const secondsPlayed = game.stats.timePlayed % 60;
+
+                const kda = _floor(_divide(_add(game.stats.championsKilled, game.stats.assists), game.stats.numDeaths), 2);
+                const creepScore = _add(game.stats.minionsKilled, game.stats.neutralMinionsKilled);
 
                 return {
                     result: game.stats.win === true ? "Win" : "Defeat",
-                    timeSpent: "27m 22s",
+                    timeSpent: `${minutesPlayed}m ${secondsPlayed}s`,
                     gameDate: `${localGameDate.toLocaleDateString()} ${localGameDate.toLocaleTimeString()}`,
-                    kda: (game.stats.championsKilled + game.stats.assists) / game.stats.numDeaths,
-                    cs: game.stats.minionsKilled + game.stats.neutralMinionsKilled,
+                    kda: kda,
+                    cs:  creepScore,
                     gold: game.stats.goldEarned,
                     champId: game.championId
                 };
@@ -91,7 +102,7 @@ class Reloader extends Component {
     getChampionInfo(gameInfo){
 
         const gameCards = gameInfo.gameCards;
-
+        
         let axiosRequests = gameCards.map((gameCard) => {
             const apiUrl = ApiBuilder.getChampionDataUrl(gameCard.champId);
             return Axios.get(apiUrl);
@@ -99,15 +110,14 @@ class Reloader extends Component {
 
         return Axios.all(axiosRequests)
             .then(function (obj) {
-                
-                let gameCardsWithChamp = obj.map((response) => {
-                    
-                    let foundChamp = {champ: response.data.key};
-                    let gameCard = _find(gameCards, { champId: response.data.id });
-                    
-                    return Object.assign({}, gameCard, foundChamp);
-                });
 
+                let gameCardsWithChamp = gameCards.map((gameCard) =>{
+                    let champData = _find(obj, function(o) { return o.data.id === gameCard.champId });
+                    
+                    let foundChamp = {champ: champData.data.key};
+                    return Object.assign({}, gameCard, foundChamp);                    
+                });
+              
                 return Object.assign({}, gameInfo, {gameCards: gameCardsWithChamp});
             
             })
