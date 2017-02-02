@@ -7,6 +7,8 @@ import GameCard from '../../components/gamecard/gamecard';
 import Modal from 'react-bootstrap/lib/Modal';
 //@Libs
 import 'bootstrap/dist/css/bootstrap.css';
+//@Actions
+import DashboardActions from '../../actions/dashboardActions';
 
 class DasboardView extends Component {
     constructor() {
@@ -19,6 +21,14 @@ class DasboardView extends Component {
 
         this.isModalOpen = this.isModalOpen.bind(this);
         this.updateStateFromReload = this.updateStateFromReload.bind(this);
+    }
+
+    componentDidMount() {
+        this.isModalOpen(true);
+
+        DashboardActions.updateSummonerInfo('zamancer', 
+                                            this.updateStateFromReload, 
+                                            function(){ this.isModalOpen(false); });
     }
 
     isModalOpen(value) {
